@@ -1,16 +1,15 @@
+# https://github.com/dotnet/dotnet-docker/blob/main/samples/aspnetapp/Dockerfile.alpine-x64
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-WORKDIR /app
+WORKDIR /source
 
-COPY *.sln .
-COPY web/*.csproj ./web/
+COPY web/*.csproj .
 RUN dotnet restore -r linux-musl-x64
 
-COPY web/. ./web/
-WORKDIR /app/web
-RUN dotnet publish -c Release -o out -r linux-musl-x64 --self-contained false --no-restore
+COPY web/. .
+RUN dotnet publish -c Release -o /app -r linux-musl-x64 --self-contained false --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:7.0-alpine-amd64
 WORKDIR /app
-COPY --from=build /app/web/out ./
+COPY --from=build /app .
 
-ENTRYPOINT ["dotnet", "web.dll"]
+ENTRYPOINT ["./web"]
