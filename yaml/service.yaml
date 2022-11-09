@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: asp7-service
+  labels:
+   app: asp7-service
+spec:
+  selector:
+    app: asp7
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  type: LoadBalancer

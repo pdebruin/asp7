@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: asp7-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: asp7
+  template:
+    metadata:
+      labels:
+        app: asp7
+    spec:
+      containers:
+      - name: asp7-container
+        image: "pieterd.azurecr.io/pdebruin/asp7:latest"
+        ports:
+        - containerPort: 80
